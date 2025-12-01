@@ -1,0 +1,228 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="style.css">
+    <title>💰 2MONEY - Sistema de Investimentos</title>
+    <body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 2MONEY</h1>
+            <div class="user-name" id="user-name-display">Olá, Investidor!</div>
+        </div>
+
+        <div class="main-content">
+            <!-- Painel de Investimentos -->
+            <div class="card">
+                <h2>📊 Meu Progresso de Investimento</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="total-investido">R$ 0</div>
+                        <div class="stat-label">Total Investido</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="meta-valor">R$ 0</div>
+                        <div class="stat-label">Meta</div>
+                    </div>
+                </div>
+
+                <div class="grafico-container">
+                    <div class="grafico-info">
+                        <span>Progresso</span>
+                        <span id="percentual-meta">0%</span>
+                    </div>
+                    <div class="grafico-bar">
+                        <div class="grafico-fill" id="grafico-progresso" style="width: 0%">
+                            0%
+                        </div>
+                    </div>
+                    <div class="grafico-info" style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                        <span id="falta-valor">Falta: R$ 0</span>
+                    </div>
+                </div>
+
+                <!-- Gráfico Visual Interativo -->
+                <div class="grafico-visual">
+                    <div class="grafico-titulo">📊 Evolução dos Investimentos</div>
+                    <div id="grafico-barras-container"></div>
+                    <div class="grafico-legenda">
+                        <div class="legenda-item">
+                            <div class="legenda-cor" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                            <span>Investimentos</span>
+                        </div>
+                        <div class="legenda-item">
+                            <div class="legenda-cor" style="background: linear-gradient(135deg, #4CAF50, #45a049);"></div>
+                            <span>Meta Alcançada</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="abrirModalInvestimento()" style="flex: 1;">
+                        ➕ Registrar Investimento
+                    </button>
+                    <button class="btn btn-warning" onclick="abrirModalEditarMeta()" style="flex: 1;">
+                        🎯 Alterar Meta
+                    </button>
+                </div>
+
+                <h3 style="margin-top: 30px; color: #1e3c72;">📋 Meus Investimentos</h3>
+                <div class="investimentos-lista" id="investimentos-lista">
+                    <p style="text-align: center; color: #999; padding: 20px;">Nenhum investimento registrado ainda</p>
+                </div>
+            </div>
+
+            <!-- Painel de Metas -->
+            <div class="card metas-section">
+                <h2>🎯 Minhas Metas Semanais</h2>
+                <p style="color: #666; margin-bottom: 20px;">Complete metas para ganhar XP e subir de nível!</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="xp-total">0 XP</div>
+                        <div class="stat-label">XP Total</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="metas-concluidas">0</div>
+                        <div class="stat-label">Metas Concluídas</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="abrirModalMeta()" style="width: 100%; margin-top: 20px;">
+                    ➕ Criar Nova Meta
+                </button>
+
+                <div id="metas-lista" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Conquistas no canto inferior direito -->
+        <div class="conquistas-box">
+            <h3>🏆 Minhas Conquistas</h3>
+            <div id="conquistas-lista"></div>
+            <div style="margin-top: 15px;">
+                <span class="nivel-badge" id="nivel-badge">Nível 1</span>
+            </div>
+            <div class="xp-info">
+                <div style="display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px;">
+                    <span id="xp-atual">0 XP</span>
+                    <span id="xp-proximo">500 XP</span>
+                </div>
+                <div class="xp-bar-conquista">
+                    <div class="xp-bar-fill" id="xp-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Participação Inicial -->
+    <div class="modal show" id="modal-participacao">
+        <div class="modal-content">
+            <h2 style="color: #1e3c72; margin-bottom: 20px; text-align: center;">💰 Bem-vindo ao 2MONEY!</h2>
+            <p style="margin-bottom: 20px; line-height: 1.6; text-align: center;">
+                Comece sua jornada financeira com gamificação!
+            </p>
+            
+            <div class="form-group">
+                <label>👤 Seu Nome:</label>
+                <input type="text" id="nome-usuario" placeholder="Digite seu nome completo">
+            </div>
+            
+            <div class="form-group">
+                <label>🎯 Sua Meta de Economia (R$):</label>
+                <input type="number" id="meta-inicial" placeholder="Ex: 50000" min="0" step="100">
+            </div>
+            
+            <div class="form-group">
+                <label>💵 Quanto você já tem economizado? (R$):</label>
+                <input type="number" id="investimento-inicial" placeholder="Ex: 1000" min="0" step="0.01">
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="iniciar-reserva" checked style="margin-right: 10px; width: 20px; height: 20px; cursor: pointer;">
+                    <span style="font-weight: bold;">Inicializar a reserva de emergência</span>
+                </label>
+            </div>
+            
+            <button class="btn btn-primary" onclick="iniciarParticipacao()" style="width: 100%; padding: 15px; font-size: 1.1em;">
+                Começar Jornada! 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Investimento -->
+    <div class="modal" id="modal-investimento">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="color: #1e3c72;">📊 Registrar Investimento</h2>
+                <button class="close-btn" onclick="fecharModal('modal-investimento')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>💵 Valor do Investimento</label>
+                <input type="number" id="valor-investimento" placeholder="Ex: 500.00" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>📅 Data</label>
+                <input type="date" id="data-investimento">
+            </div>
+            <div class="form-group">
+                <label>📝 Descrição (opcional)</label>
+                <input type="text" id="descricao-investimento" placeholder="Ex: Investimento Tesouro Direto">
+            </div>
+            <button class="btn btn-primary" onclick="salvarInvestimento()" style="width: 100%;">
+                💾 Salvar Investimento
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Meta -->
+    <div class="modal" id="modal-editar-meta">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="color: #1e3c72;">🎯 Alterar Meta de Investimento</h2>
+                <button class="close-btn" onclick="fecharModal('modal-editar-meta')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>👤 Nome</label>
+                <input type="text" id="editar-nome" placeholder="Digite seu nome">
+            </div>
+            <div class="form-group">
+                <label>💰 Nova Meta de Investimento</label>
+                <input type="number" id="editar-meta" placeholder="Ex: 15000" min="0" step="100">
+            </div>
+            <button class="btn btn-primary" onclick="salvarEdicaoMeta()" style="width: 100%;">
+                💾 Salvar Alterações
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Meta -->
+    <div class="modal" id="modal-meta">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="color: #1e3c72;">🎯 Criar Nova Meta</h2>
+                <button class="close-btn" onclick="fecharModal('modal-meta')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>📋 Título da Meta</label>
+                <input type="text" id="titulo-meta" placeholder="Ex: Economizar R$ 300 esta semana">
+            </div>
+            <div class="form-group">
+                <label>⭐ XP da Meta</label>
+                <input type="number" id="xp-meta" placeholder="Ex: 150" min="50" step="50" value="100">
+            </div>
+            <div class="form-group">
+                <label>😀 Emoji da Meta</label>
+                <input type="text" id="emoji-meta" placeholder="Ex: 💰" maxlength="2">
+            </div>
+            <button class="btn btn-primary" onclick="salvarMeta()" style="width: 100%;">
+                💾 Criar Meta
+            </button>
+        </div>
+    </div>
+    <script src="bd.js"></script>
+    </body>
+    </head>
+
